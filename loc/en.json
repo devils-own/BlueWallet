@@ -75,6 +75,7 @@
     "item_rating": "{rating} trades",
     "item_rating_no": "No rating",
     "login": "Login",
+    "logout": "logout",
     "mycont": "My contracts",
     "offer_accept": "Accept offer",
     "offer_account_finish": "Looks like you didn't finish setting up account on HodlHodl. Would you like to finish setup now?",
