@@ -9,7 +9,6 @@ import navigationStyle from '../../components/navigationStyle';
 import { DynamicQRCode } from '../../components/DynamicQRCode';
 import { SquareButton } from '../../components/SquareButton';
 import loc from '../../loc';
-import ActionSheet from '../ActionSheet';
 const bitcoin = require('bitcoinjs-lib');
 const fs = require('../../blue_modules/fs');
 
@@ -49,26 +48,9 @@ const PsbtMultisigQRCode = () => {
     }
   };
 
-  const showActionSheet = () => {
-    const options = [loc._.cancel, loc.wallets.take_photo, loc.wallets.list_long_choose, loc.wallets.import_file];
-
-    ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, async buttonIndex => {
-      if (buttonIndex === 1) {
-        fs.takePhotoWithImagePickerAndReadPhoto.then(onBarScanned);
-      } else if (buttonIndex === 2) {
-        fs.showImagePickerAndReadImage(onBarScanned).catch(error => alert(error.message));
-      } else if (buttonIndex === 3) {
-        const { data } = await fs.showFilePickerAndReadFile();
-        if (data) {
-          onBarScanned({ data });
-        }
-      }
-    });
-  };
-
   const openScanner = () => {
     if (isDesktop) {
-      showActionSheet();
+      fs.showActionSheet().then(data => onBarScanned({ data }));
     } else {
       navigate('ScanQRCodeRoot', {
         screen: 'ScanQRCode',

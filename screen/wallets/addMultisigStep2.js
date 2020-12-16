@@ -41,7 +41,6 @@ import MultipleStepsListItem, {
   MultipleStepsListItemButtohType,
   MultipleStepsListItemDashType,
 } from '../../components/MultipleStepsListItem';
-import ActionSheet from '../ActionSheet';
 import { BlueStorageContext } from '../../blue_modules/storage-context';
 
 const prompt = require('../../blue_modules/prompt');
@@ -392,7 +391,7 @@ const WalletsAddMultisigStep2 = () => {
 
   const scanOrOpenFile = () => {
     if (isDesktop) {
-      showActionSheet();
+      fs.showActionSheet().then(data => onBarScanned({ data }));
     } else {
       navigation.navigate('ScanQRCodeRoot', {
         screen: 'ScanQRCode',
@@ -402,23 +401,6 @@ const WalletsAddMultisigStep2 = () => {
         },
       });
     }
-  };
-
-  const showActionSheet = () => {
-    const options = [loc._.cancel, loc.wallets.take_photo, loc.wallets.list_long_choose, loc.wallets.import_file];
-
-    ActionSheet.showActionSheetWithOptions({ options, cancelButtonIndex: 0 }, async buttonIndex => {
-      if (buttonIndex === 1) {
-        fs.takePhotoWithImagePickerAndReadPhoto.then(onBarScanned);
-      } else if (buttonIndex === 2) {
-        fs.showImagePickerAndReadImage(onBarScanned).catch(error => alert(error.message));
-      } else if (buttonIndex === 3) {
-        const { data } = await fs.showFilePickerAndReadFile();
-        if (data) {
-          onBarScanned({ data });
-        }
-      }
-    });
   };
 
   const _renderKeyItem = el => {
